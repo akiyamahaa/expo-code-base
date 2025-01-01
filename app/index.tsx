@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
+import { useAppSelector } from "./redux";
 
 export default function Index() {
+  const counter = useAppSelector((state) => state.counter);
   return (
     <View
       style={{
