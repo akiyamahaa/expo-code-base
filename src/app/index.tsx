@@ -1,12 +1,21 @@
-import { Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { useAppSelector } from '../redux'
+import { useEffect } from 'react'
+import { router } from 'expo-router'
 
 export default function Index() {
   const counter = useAppSelector((state) => state.counter)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.replace('/(no-tabs)/splash')
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <View className="flex-1 justify-center items-center">
-      <Text className="text-red-200 text-2xl">Edit app/index.tsx to edit this screen.</Text>
-      <Text className="text-blue-300 text-3xl">{counter.value}</Text>
+      {/* <Image source={images.logo} className="w-[186px] h-[276px]" /> */}
     </View>
   )
 }
