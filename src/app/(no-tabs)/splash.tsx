@@ -8,7 +8,7 @@ const SplashScreen = () => {
   const router = useRouter()
 
   const onStart = () => {
-    // router.push('/home')
+    router.push('/home')
   }
 
   return (
