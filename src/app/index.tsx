@@ -1,4 +1,4 @@
-import { Image, StatusBar, StyleSheet, View } from 'react-native'
+import { Image, StatusBar, View } from 'react-native'
 import { useAppSelector } from '../redux'
 import { useEffect } from 'react'
 import { router } from 'expo-router'
@@ -8,7 +8,7 @@ export default function Root() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/(no-tabs)/splash')
-    }, 20000)
+    }, 2000)
     return () => clearTimeout(timer)
   }, [])
 

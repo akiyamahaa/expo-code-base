@@ -1,15 +1,23 @@
 import { Image, SafeAreaView, StatusBar, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { images } from '@/constants'
 import CustomButton from '@/components/CustomButton'
 import { useRouter } from 'expo-router'
+import soundManager from '@/utils/soundManager'
+import sound from '@/constants/sound'
 
 const SplashScreen = () => {
   const router = useRouter()
 
-  const onStart = () => {
+  const onStart = async () => {
+    await soundManager.stopBackgroundSound()
+    await soundManager.playSFX(sound.clickBtn)
     router.push('/home')
   }
+
+  useEffect(() => {
+    soundManager.playBackgroundSound(sound.bgSound)
+  }, [])
 
   return (
     <SafeAreaView
