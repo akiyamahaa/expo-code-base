@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
-import { Image, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { Home3, Flashy, TableDocument, Profile } from 'iconsax-react-native'
 
 type TabIconProps = {
@@ -12,7 +12,6 @@ type TabIconProps = {
 }
 
 const TabIcon = ({ name, color, focused, Icon, size = 24 }: TabIconProps) => {
-  console.log(color, size)
   return (
     <View className="flex-1 pt-1 items-center gap-1">
       <Icon size={size} color={color} variant="Broken" />
