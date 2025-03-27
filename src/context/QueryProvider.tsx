@@ -11,7 +11,16 @@ function onAppStateChange(status: AppStateStatus) {
     focusManager.setFocused(status === "active");
   }
 }
-export const _queryClient = new QueryClient();
+export const _queryClient = new QueryClient(
+  {
+    defaultOptions: {
+      queries: {
+        retry: 5,
+        retryDelay: 1000,
+      },
+    },
+  }
+);
 
 export const invalidateQueriesWithDelay = (
   args: Parameters<typeof _queryClient.invalidateQueries>[0],

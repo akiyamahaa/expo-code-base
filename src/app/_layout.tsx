@@ -1,15 +1,14 @@
 import { Stack } from 'expo-router';
-import { Provider as ReduxProvider } from 'react-redux';
-import store from '@/redux';
 import '~/global.css'; // Tailwind / NativeWind globals
-import { QueryProvider } from '@/hooks/query/QueryProvider';
+import { QueryProvider } from '@/context/QueryProvider';
+import { AuthProvider } from '@/context/AuthProvider';
 
 export default function RootLayout() {
   return (
     <QueryProvider>
-      <ReduxProvider store={store}>
+      <AuthProvider>
         <Stack screenOptions={{ headerShown: false }} />
-      </ReduxProvider>
+      </AuthProvider>
     </QueryProvider>
   );
 }

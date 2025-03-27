@@ -1,5 +1,4 @@
 import { Image, StatusBar, View } from 'react-native'
-import { useAppSelector } from '../redux'
 import { useEffect } from 'react'
 import { router } from 'expo-router'
 import { images } from '@/constants'
