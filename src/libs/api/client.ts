@@ -20,4 +20,21 @@ API_CLIENT.interceptors.request.use(
   (error) => Promise.reject(error),
 )
 
+// API_CLIENT.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     if (error.response?.status === 401) {
+//       console.error('Unauthorized! Redirecting to login...')
+//       // TODO: Thêm logic refresh token nếu cần
+//       const { signOut } = useAuthStore.getState()
+//       signOut()
+
+//       if (typeof window !== 'undefined') {
+//         window.location.href = '/login'
+//       }
+//     }
+//     return Promise.reject(error)
+//   },
+// )
+
 export default API_CLIENT

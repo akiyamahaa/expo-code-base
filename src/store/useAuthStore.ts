@@ -19,7 +19,15 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       setToken: (token) => set({ token }),
       setUser: (user) => set({ user, isAuthenticated: !!user }),
-      signOut: () => set({ user: null, isAuthenticated: false }),
+      signOut: () => {
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+        })
+        // Xoá luôn storage nếu muốn reset toàn bộ
+        useAuthStore.persist?.clearStorage?.()
+      },
     }),
     {
       name: 'auth-storage', // Tên key lưu trong AsyncStorage

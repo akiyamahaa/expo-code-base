@@ -1,4 +1,3 @@
-"use client";
 import { createContext, useContext, ReactNode } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useAuth } from "@/hooks/useAuth";
