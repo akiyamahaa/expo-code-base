@@ -4,7 +4,7 @@ import API_CLIENT from '@/libs/api/client'
 import { AuthRoutes } from '@/libs/api/routes/auth-routes'
 import { _queryClient } from '@/context/QueryProvider'
 import { useRouter } from 'expo-router'
-import { Routes } from '@/libs/api/routes/routes'
+import { ERouteTable } from '@/constants/route-table'
 
 export function useAuth() {
   const { setUser, signOut, setToken, token } = useAuthStore()
@@ -33,7 +33,7 @@ export function useAuth() {
 
       await _queryClient.invalidateQueries({ queryKey: ['user'] })
       // ✅ Store user in Zustand
-      router.push(Routes.home) // ✅ Redirect after login
+      router.push(ERouteTable.HOME) // ✅ Redirect after login
     },
     onError: () => {
       alert('Invalid credentials')
@@ -67,7 +67,7 @@ export function useAuth() {
       console.log('signOut')
       await _queryClient.invalidateQueries({ queryKey: ['user'] }) // ✅ Clear React Query cache
       signOut() // ✅ Clear Zustand store
-      router.push(AuthRoutes.auth.signIn) // ✅ Redirect to login page
+      router.push(ERouteTable.SIGIN_IN) // ✅ Redirect to login page
     },
   })
 
