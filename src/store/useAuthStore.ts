@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { User } from '@/models/users.model'
 
 interface AuthState {
-  user: null | { id: string; email: string }
+  user: User | null
   token: string | null
   isAuthenticated: boolean
   setToken: (token: string) => void

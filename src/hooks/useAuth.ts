@@ -14,7 +14,6 @@ export function useAuth() {
   const signInMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
       // Login and get token
-
       const response = await API_CLIENT.post(AuthRoutes.auth.signIn, {
         email,
         password,
@@ -37,6 +36,36 @@ export function useAuth() {
     },
     onError: () => {
       alert('Invalid credentials')
+    },
+  })
+  // Thêm vào trong file useAuth.js
+  const signUpMutation = useMutation({
+    mutationFn: async ({
+      name,
+      username,
+      email,
+      password,
+    }: {
+      name: string
+      username: string
+      email: string
+      password: string
+    }) => {
+      const response = await API_CLIENT.post(AuthRoutes.auth.signUp, {
+        username,
+        name,
+        email,
+        password,
+      })
+      return response.data
+    },
+    onSuccess: () => {
+      alert('Đăng ký thành công! Vui lòng đăng nhập.')
+      router.push(ERouteTable.SIGIN_IN)
+    },
+    onError: (error) => {
+      console.error('Đăng ký thất bại:', error)
+      alert(`Đăng ký thất bại.`)
     },
   })
 
@@ -71,5 +100,5 @@ export function useAuth() {
     },
   })
 
-  return { signInMutation, signOutMutation, userQuery }
+  return { signInMutation, signOutMutation, signUpMutation, userQuery }
 }
