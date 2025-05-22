@@ -1,14 +1,11 @@
-import { Stack } from 'expo-router';
-import '~/global.css'; // Tailwind / NativeWind globals
-import { QueryProvider } from '@/context/QueryProvider';
-import { AuthProvider } from '@/context/AuthProvider';
+import { Stack } from 'expo-router'
+import '~/global.css' // Tailwind / NativeWind globals
+import { QueryProvider } from '@/context/QueryProvider'
 
 export default function RootLayout() {
   return (
     <QueryProvider>
-      <AuthProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </AuthProvider>
+      <Stack screenOptions={{ headerShown: false }} />
     </QueryProvider>
-  );
+  )
 }

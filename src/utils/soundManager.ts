@@ -1,84 +1,60 @@
-import { Audio, InterruptionModeIOS } from 'expo-av'
+// src/utils/SoundManager.ts
+import {
+  createAudioPlayer,
+  AudioPlayer,
+  AudioSource,
+  setAudioModeAsync,
+  // hàm setAudioModeAsync nằm ở namespace Audio
+} from 'expo-audio'
 
 class SoundManager {
-  private backgroundSound: Audio.Sound | null = null
-  private sfxSound: Audio.Sound | null = null
+  private backgroundPlayer: AudioPlayer | null = null
+  private sfxPlayer: AudioPlayer | null = null
 
   constructor() {
-    this.configureAudioMode() // Ensure audio mode is set when app starts
+    // Fire-and-forget: cấu hình audio ngay khi app khởi tạo
+    setAudioModeAsync({
+      allowsRecording: false,
+      interruptionMode: 'duckOthers', // thay cho InterruptionModeIOS.DuckOthers
+      interruptionModeAndroid: 'duckOthers',
+      playsInSilentMode: true,
+      shouldPlayInBackground: true,
+      shouldRouteThroughEarpiece: false,
+    }).catch(console.warn) // không làm “vỡ” app nếu lỗi cấu hình
   }
 
-  /**
-   * 🎛 Configure the Audio Mode for iOS
-   */
-  async configureAudioMode() {
-    try {
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: false, // Ensure no microphone interference
-        interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-        playsInSilentModeIOS: true, // Allow playback even in silent mode
-        staysActiveInBackground: true, // Allow background playback
-        shouldDuckAndroid: true,
-        playThroughEarpieceAndroid: false,
-      })
-    } catch (error) {
-      console.error('Error setting audio mode:', error)
+  /** 🔊 Phát nhạc nền (lặp vô hạn) */
+  async playBackgroundSound(source: AudioSource) {
+    if (this.backgroundPlayer) return // đã có thì bỏ qua
+    this.backgroundPlayer = createAudioPlayer(source) // :contentReference[oaicite:0]{index=0}
+    this.backgroundPlayer.loop = true
+    await this.backgroundPlayer.play() // play() không trả Promise, nhưng await OK
+  }
+
+  /** ⏹️ Dừng nhạc nền */
+  async stopBackgroundSound() {
+    if (!this.backgroundPlayer) return
+    this.backgroundPlayer.pause()
+    this.backgroundPlayer.remove() // giải phóng tài nguyên :contentReference[oaicite:1]{index=1}
+    this.backgroundPlayer = null
+  }
+
+  /** 🎵 Phát SFX duy nhất (ghi đè cái trước) */
+  async playSFX(source: AudioSource) {
+    if (this.sfxPlayer) {
+      this.sfxPlayer.remove()
+      this.sfxPlayer = null
     }
+    this.sfxPlayer = createAudioPlayer(source)
+    this.sfxPlayer.play()
   }
 
-  /**
-   * 🔊 Play Background Sound
-   * @param soundFile
-   */
-  async playBackgroundSound(soundFile: any): Promise<void> {
-    try {
-      if (this.backgroundSound) return
-
-      this.backgroundSound = new Audio.Sound()
-      await this.backgroundSound.loadAsync(soundFile)
-      await this.backgroundSound.setIsLoopingAsync(true) // background repeat
-      await this.backgroundSound.playAsync()
-    } catch (error) {
-      console.error('Lỗi phát nhạc nền:', error)
-    }
-  }
-
-  /**
-   * ⏹️ stop background sound
-   */
-  async stopBackgroundSound(): Promise<void> {
-    if (this.backgroundSound) {
-      await this.backgroundSound.stopAsync()
-      await this.backgroundSound.unloadAsync()
-      this.backgroundSound = null
-    }
-  }
-
-  /**
-   * 🎵 Play sound effect
-   * @param soundFile
-   */
-  async playSFX(soundFile: any): Promise<void> {
-    try {
-      if (this.sfxSound) {
-        await this.sfxSound.unloadAsync()
-      }
-      this.sfxSound = new Audio.Sound()
-      await this.sfxSound.loadAsync(soundFile)
-      await this.sfxSound.playAsync()
-    } catch (error) {
-      console.error('Lỗi phát âm thanh hiệu ứng:', error)
-    }
-  }
-
-  /**
-   * ⏹️ stop all sound
-   */
-  async stopAllSounds(): Promise<void> {
+  /** ⏹️ Dừng tất cả */
+  async stopAllSounds() {
     await this.stopBackgroundSound()
-    if (this.sfxSound) {
-      await this.sfxSound.unloadAsync()
-      this.sfxSound = null
+    if (this.sfxPlayer) {
+      this.sfxPlayer.remove()
+      this.sfxPlayer = null
     }
   }
 }

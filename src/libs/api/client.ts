@@ -1,7 +1,6 @@
 import { useAuthStore } from '@/store/useAuthStore'
 import axios from 'axios'
 import { API_BASE_URL } from '../env'
-import { useAuthContext } from '@/context/AuthProvider'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
 

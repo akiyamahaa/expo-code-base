@@ -1,10 +1,9 @@
 import { Pressable, Text, View } from 'react-native'
 import React from 'react'
-import { useAuthContext } from '@/context/AuthProvider'
+import { useAuthStore } from '@/store/useAuthStore'
 
 const Home = () => {
-  const { signOut } = useAuthContext()
-  const { user } = useAuthContext()
+  const { signOut, user } = useAuthStore()
   return (
     <View className="flex-1 mt-12">
       <Text>Hello, {user?.name}</Text>
